@@ -87,7 +87,7 @@ async def train_greek() -> None:
         "επόμενο",
         "εκτέλεσε το party time",
         "ενεργοποίησε το mood lighting",
-        "άκυρο"
+        "άκυρο",
     ],
 )
 @pytest.mark.asyncio
