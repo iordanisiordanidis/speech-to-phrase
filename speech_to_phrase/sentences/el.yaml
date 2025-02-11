@@ -1,0 +1,328 @@
+language: el
+
+lists:
+  color:
+    values:
+      - "λευκό"
+      - "μαύρο"
+      - "κόκκινο"
+      - "πορτοκαλί"
+      - "κίτρινο"
+      - "πράσινο"
+      - "μπλε"
+      - "μωβ"
+      - "καφέ"
+      - "ροζ"
+      - "τιρκουάζ"
+  brightness:
+    range:
+      type: "percentage"
+      from: 10
+      to: 100
+      step: 10
+  seconds:
+    range:
+      from: 10
+      to: 100
+      step: 5
+  minutes_small:
+    range:
+      from: 2
+      to: 9
+  minutes_large:
+    range:
+      from: 10
+      to: 100
+      step: 10
+  minutes_extra:
+    values:
+      - in: "δεκαπέντε"
+        out: 15
+      - in: "σαρανταπέντε"
+        out: 45
+  minutes_half:
+    values:
+      - in: "μισό"
+        out: 30
+  hours_half:
+    values:
+      - in: "μισή"
+        out: 30
+  hours:
+    range:
+      from: 2
+      to: 24
+  cover_classes:
+    values:
+      - "(ρολό|ρολά)"
+      - "(κουρτίν[α|ες])"
+      - "(παράθυρ[ο|α])"
+
+intents:
+  HassNevermind:
+    data:
+      - sentences:
+        - "άκυρο"
+        - "ξέχνα[ ]το"
+        - "άστο"
+
+  HassGetCurrentTime:
+    data:
+    - sentences:
+        - "τι ώρα είναι [τώρα]"
+
+  HassGetCurrentDate:
+    data:
+      - sentences:
+          - "ποια είναι η (ημερομηνία σήμερα|σημερινή ημερομηνία)"
+          - "τι μέρα (είναι|έχουμε) [σήμερα]"
+
+  HassGetWeather:
+    data:
+      - sentences:
+          - "(πώς|ποιος) [θα] είναι ο καιρός"
+          - "τι καιρό [θα] κάνει"
+      
+      - sentences:
+          - "(πώς|ποιος) [θα] είναι ο καιρός (στον|στη[ν]|στο|του|της) {name}"
+          - "τι καιρό [θα] κάνει (στον|στη[ν]|στο) {name}"
+        requires_context:
+          domain: weather
+  
+  HassTurnOn:
+    data:
+      - sentences:
+          - "(άνοιξε|άναψε) [τα] φώτα"
+      
+      - sentences:
+          - "(άνοιξε|άναψε) [το(ν)|τα] {name}"
+          - "(άνοιξε|άναψε) [το(ν)|τα] {name} (στο(ν)|στην) {area}"
+          - "(άνοιξε|άναψε) [το(ν)|τα] {name} στο(ν) {floor} [όροφο]"
+        requires_context:
+          domain:
+            - light
+            - switch
+            - fan
+            - media_player
+            - input_boolean
+
+      - sentences:
+          - "(άνοιξε|άναψε) [όλα τα] φώτα (στο(ν)|στην) {area}"
+          - "(άνοιξε|άναψε) [όλα τα] φώτα στο(ν) {floor} [όροφο]"
+      
+      - sentences:
+        - "(άνοιξε|ανέβασε [πάνω|ψηλά]) (το|τα) {name}"
+        requires_context:
+          domain:
+            - cover
+      
+      - sentences:
+          - "(άνοιξε|ανέβασε [πάνω|ψηλά]) (το|τα) {cover_classes} (στο(ν)|στην) {area}"
+          - "(άνοιξε|ανέβασε [πάνω|ψηλά]) (το|τα) {cover_classes} στο(ν) {floor} [όροφο]"
+      
+      - sentences:
+          - "(κλείσε|κλείδωσε) (το|την|τα) {name}"
+        requires_context:
+          domain: lock
+      
+      - sentences:
+          - "(τρέξε|ξεκίνα|ενεργοποίησε) (το script|τον κώδικα) {name}"
+        requires_context:
+          domain: script
+      
+      - sentences:
+          - "(τρέξε|ξεκίνα|ενεργοποίησε) (το (σενάριο|scene)|την σκηνή) {name}"
+        requires_context:
+          domain: scene
+
+  HassTurnOff:
+    data:
+      - sentences:
+          - "(κλείσε|σβήσε) [τα] φώτα"
+      
+      - sentences:
+          - "(κλείσε|σβήσε) [το(ν)|τα] {name}"
+          - "(κλείσε|σβήσε) [το(ν)|τα] {name} (στο(ν)|στην) {area}"
+          - "(κλείσε|σβήσε) [το(ν)|τα] {name} στο(ν) {floor} [όροφο]"
+        requires_context:
+          domain:
+            - light
+            - switch
+            - fan
+            - media_player
+            - input_boolean
+
+      - sentences:
+          - "(κλείσε|σβήσε) [όλα τα] φώτα (στο(ν)|στην) {area}"
+          - "(κλείσε|σβήσε) [όλα τα] φώτα στο(ν) {floor} [όροφο]"
+      
+      - sentences:
+        - "(κλείσε|κατέβασε [κάτω|χαμηλά]) (το|τα) {name}"
+        requires_context:
+          domain:
+            - cover
+      
+      - sentences:
+          - "(κλείσε|κατέβασε [κάτω|χαμηλά]) (το|τα) {cover_classes} (στο(ν)|στην) {area}"
+          - "(κλείσε|κατέβασε [κάτω|χαμηλά]) (το|τα) {cover_classes} στο(ν) {floor} [όροφο]"
+      
+      - sentences:
+          - "(άνοιξε|ξεκλείδωσε) (το|την|τα) {name}"
+        requires_context:
+          domain: lock
+
+  HassLightSet:
+    data:
+      - sentences:
+          - "(όρισε|ρύθμισε) τη φωτεινότητα (του|της) {name} [ως|σε] {brightness} τοις εκατό"
+        requires_context:
+          domain: light
+      
+      - sentences:
+          - "(όρισε|ρύθμισε) τη φωτεινότητα (του|της) {area} [ως|σε] {brightness} τοις εκατό"
+      - sentences:
+          - "(όρισε|ρύθμισε) τη φωτεινότητα του {floor} [ορόφου] [ως|σε] {brightness} τοις εκατό"
+
+      - sentences:
+          - "(όρισε|ρύθμισε) το χρώμα (του|της) {name} [ως|σε] {color}"
+          - "(όρισε|ρύθμισε) [το|την] {name} [ως|σε] {color}"
+        requires_context:
+          domain: light
+      
+      - sentences:
+          - "(όρισε|ρύθμισε) το χρώμα [στις λάμπες] (του|της) {area} [ως|σε] {color}"
+          - "(όρισε|ρύθμισε) (στο|στην) {area} (τα φώτα|τις λάμπες) [ως|σε] χρώμα {color}"
+          - "(όρισε|ρύθμισε) (τα φώτα|τις λάμπες) (του|της) {area} [ως|σε] {color}"
+      - sentences:
+          - "(όρισε|ρύθμισε) το χρώμα [στις λάμπες] του {floor} [ορόφου] [ως|σε] {color}"
+          - "(όρισε|ρύθμισε) (στο(ν)|του) {floor} [όροφο|ορόφου] (τα φώτα|τις λάμπες) [ως|σε] χρώμα {color}"
+          - "(όρισε|ρύθμισε) (τα φώτα|τις λάμπες) του {floor} [ορόφου] [ως|σε] {color}" 
+
+  HassStartTimer:
+    data:
+      - sentences:
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {seconds} δευτερόλεπτα"
+      - sentences:
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 λεπτό"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {minutes_small} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {minutes_large} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {minutes_extra} λεπτά"
+      - sentences:
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 και {minutes_half:seconds} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {minutes_small} και {minutes_half:seconds} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {minutes_large} και {minutes_half:seconds} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {minutes_extra} και {minutes_half:seconds} λεπτά"
+      - sentences:
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 ώρα"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {hours} ώρες"
+      - sentences:
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 και {minutes_half:minutes} ώρες"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {hours} και {minutes_half:minutes} ώρες"
+      - sentences:
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 ώρα και 1 λεπτό"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 ώρα και {minutes_small} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 ώρα και {minutes_large} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) 1 ώρα και {minutes_extra} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {hours} ώρες και {minutes_small} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {hours} ώρες και {minutes_large} λεπτά"
+          - "(ρύθμισε|ξεκίνα|δημιούργησε) ένα χρονοδιακόπτη (για|με) {hours} ώρες και {minutes_extra} λεπτά"
+
+  HassCanelTimer:
+    data:
+      - sentences:
+          - "(ακύρωσε|σταμά(τα|τησε)) [τον] χρονοδιακόπτη"
+
+  HassCancelAllTimer:
+    data:
+      - sentences:
+          - "(ακύρωσε|σταμά(τα|τησε)) όλους τους χρονοδιακόπτες"
+
+  HassPauseTimer:
+    data:
+      - sentences:
+          - "παύση [του] χρονοδιακόπτη"
+
+  HassUnpauseTimer:
+    data:
+      - sentences:
+          - "συνέχισε [τον] χρονοδιακόπτη"
+
+  HassTimerStatus:
+    data:
+      - sentences:
+          - "[ποια είναι η] κατάσταση [του|των] χρονοδια(κόπτη|κοπτών)"
+          - "πόσος χρόνος απομένει στο(ν|υς) χρονοδιακόπτ(η|ες)"
+
+  HassMediaPause:
+    data:
+      - sentences:
+          - "παύση [[της ]μουσικής]"
+      - sentences:
+          - "παύση [του|της] {name}"
+        requires_context:
+          domain: media_player
+
+  HassMediaUnpause:
+    data:
+      - sentences:
+          - "συνέχισε [[την ]μουσική]"
+      - sentences:
+          - "συνέχισε [το(ν)|την] {name}"
+        requires_context:
+          domain: media_player
+
+  HassMediaNext:
+    data:
+      - sentences:
+          - "(επόμενο|παράλειψη) [[αυτό το ](κομμάτι|τραγούδι)]"
+      - sentences:
+          - "(επόμενο|παράλειψη) [[το ](κομμάτι|τραγούδι)] (στο(ν)|στην) {name}"
+        requires_context:
+          domain: media_player
+
+  HassGetTemperature:
+    data:
+      - sentences:
+          - "τι θερμοκρασία έχει [τώρα]"
+          - "(ποια|πόσο) είναι η θερμοκρασία [τώρα]"        
+      - sentences:
+          - "τι θερμοκρασία έχει (ο|η|το) {name}"
+          - "(ποια|πόσο) είναι η θερμοκρασία (του|της) {name}"
+        requires_context:
+          domain: climate
+      - sentences:
+          - "τι θερμοκρασία έχει (ο|η|το) {area}"
+          - "(ποια|πόσο) είναι η θερμοκρασία (του|της) {area}"
+      - sentences:
+          - "τι θερμοκρασία έχει (ο|το) {floor} [όροφος]"
+          - "(ποια|πόσο) είναι η θερμοκρασία του {floor} [ορόφου]"
+
+  HassGetState:
+    data:
+      - sentences:
+          - "είναι [ο|η|το] {name} {state}"
+        requires_context:
+          domain:
+            - cover
+        lists:
+          state:
+            values:
+              - "ανοικτ(ός|ή|ό)"
+              - "κλειστ(ός|ή|ό)"
+      - sentences:
+          - "είναι [ο|η|το] {name} {state}"
+        requires_context:
+          domain:
+            - lock
+        lists:
+          state:
+            values:
+              - "κλειδωμέν(ο|η|ος)"
+              - "ξεκλειδωμέν(ο|η|ος)|ξεκλείδωτ(ο|η|ος)"
+
+      - sentences:
+          - "ποια είναι η κατάσταση του {name}"
+        requires_context:
+          domain:
+            - sensor
+            - binary_sensor
