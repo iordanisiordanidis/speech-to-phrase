@@ -69,6 +69,7 @@ async def train_english() -> None:
         "what's the temperature of the EcoBee",
         "turn on Standing Light",
         "turn off lights in the Office",
+        "turn off all of the lights in the Office",
         "turn on lights on the First Floor",
         "set Kitchen lights to green",
         "set Bed Light brightness to 50 percent",
