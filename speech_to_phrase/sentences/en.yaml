@@ -111,10 +111,12 @@ intents:
             - input_boolean
 
       - sentences:
-          - "turn on [all [of]] [the] {area} lights"
-          - "turn on [all [of]] [the] lights in [the] {area}"
-          - "turn on [all [of]] [the] {floor} [floor] lights"
-          - "turn on [all [of]] [the] lights (on|in) [the] {floor} [floor]"
+          - "turn on [all|the|all of the] {area} lights"
+          - "turn on [all|the|all of the] lights in [the] {area}"
+
+      - sentences:
+          - "turn on [all|the|all of the] {floor} [floor] lights"
+          - "turn on [all|the|all of the] lights (on|in) [the] {floor} [floor]"
 
       # open
       - sentences:
@@ -166,12 +168,12 @@ intents:
             - input_boolean
 
       - sentences:
-          - "turn off [all [of]] [the] {area} lights"
-          - "turn off [all [of]] [the] lights in [the] {area}"
+          - "turn off [all|the|all of the] {area} lights"
+          - "turn off [all|the|all of the] lights in [the] {area}"
 
       - sentences:
-          - "turn off [all [of]] [the] {floor} [floor] lights"
-          - "turn off [all [of]] [the] lights (on|in) [the] {floor} [floor]"
+          - "turn off [all|the|all of the] {floor} [floor] lights"
+          - "turn off [all|the|all of the] lights (on|in) [the] {floor} [floor]"
 
       # close
       - sentences:

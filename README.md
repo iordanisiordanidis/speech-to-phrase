@@ -1,8 +1,9 @@
-# Speech-to-phrase
+<h1>
+  <img src="icon.png" alt="Speech-to-phrase logo" height="42" align="top">
+  Speech-to-phrase
+</h1>
 
-**NOTE:** This library is in beta! Expect things to change and break.
-
-A fast, local speech-to-text system that is personalized with your [Home Assistant](https://www.home-assistant.io/) device names.
+A fast and local speech-to-text system that is personalized with your [Home Assistant](https://www.home-assistant.io/) device and area names.
 
 Speech-to-phrase is not a general purpose speech recognition system. Instead of answering the question "what did the user say?", it answers "which of the phrases I know did the user say?".
 This is accomplished by combining [pre-defined sentence templates](speech_to_phrase/sentences) with the names of your Home Assistant [entities, areas, and floors](https://www.home-assistant.io/getting-started/concepts-terminology/) that have been [exposed to Assist](https://www.home-assistant.io/voice_control/voice_remote_expose_devices/).
