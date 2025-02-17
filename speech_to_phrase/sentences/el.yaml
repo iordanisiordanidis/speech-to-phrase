@@ -13,7 +13,7 @@ lists:
       - "μωβ"
       - "καφέ"
       - "ροζ"
-      - "τιρκουάζ"
+      - "τ(ι|ου)ρκουάζ"
   brightness:
     range:
       type: "percentage"
@@ -38,7 +38,7 @@ lists:
     values:
       - in: "δεκαπέντε"
         out: 15
-      - in: "σαρανταπέντε"
+      - in: "σαραντα[ ]πέντε"
         out: 45
   minutes_half:
     values:
@@ -59,13 +59,17 @@ lists:
       - "(παράθυρ[ο|α])"
 
 intents:
+  # nevermind
   HassNevermind:
     data:
       - sentences:
         - "άκυρο"
+        - "τίποτα"
         - "ξέχνα[ ]το"
         - "άστο"
+        - "άσε το"
 
+  # date, time, weather
   HassGetCurrentTime:
     data:
     - sentences:
@@ -89,8 +93,10 @@ intents:
         requires_context:
           domain: weather
   
+  # turn on/off
   HassTurnOn:
     data:
+      # turn on (generic)
       - sentences:
           - "(άνοιξε|άναψε) [τα] φώτα"
       
@@ -110,11 +116,18 @@ intents:
           - "(άνοιξε|άναψε) [όλα] [τα] φώτα (στο(ν)|στην) {area}"
           - "(άνοιξε|άναψε) [όλα] [τα] φώτα στο(ν) {floor} [όροφο]"
       
+      # turn on (domain specific)
       - sentences:
         - "(άνοιξε|ανέβασε [πάνω|ψηλά]) (το|τα) {name}"
         requires_context:
           domain:
             - cover
+      
+      - sentences:
+        - "άνοιξε [τ(ον|ην|ο)|τα] {name}"
+        requires_context:
+          domain:
+            - valve
       
       - sentences:
           - "(άνοιξε|ανέβασε [πάνω|ψηλά]) (το|τα) {cover_classes} (στο(ν)|στην) {area}"
@@ -137,6 +150,7 @@ intents:
 
   HassTurnOff:
     data:
+      # turn off (generic)
       - sentences:
           - "(κλείσε|σβήσε) [τα] φώτα"
       
@@ -156,11 +170,18 @@ intents:
           - "(κλείσε|σβήσε) [όλα] [τα] φώτα (στο(ν)|στην) {area}"
           - "(κλείσε|σβήσε) [όλα] [τα] φώτα στο(ν) {floor} [όροφο]"
       
+      # turn off (domain specific)
       - sentences:
         - "(κλείσε|κατέβασε [κάτω|χαμηλά]) (το|τα) {name}"
         requires_context:
           domain:
             - cover
+      
+      - sentences:
+        - "κλείσε [τ(ον|ην|ο)|τα] {name}"
+        requires_context:
+          domain:
+            - valve
       
       - sentences:
           - "(κλείσε|κατέβασε [κάτω|χαμηλά]) (το|τα) {cover_classes} (στο(ν)|στην) {area}"
@@ -171,8 +192,10 @@ intents:
         requires_context:
           domain: lock
 
+  # light brightness/color
   HassLightSet:
     data:
+      # brightness
       - sentences:
           - "(όρισε|ρύθμισε) τη φωτεινότητα (του|της) {name} [ως|σε|στο] {brightness} τοις εκατό"
         requires_context:
@@ -183,6 +206,7 @@ intents:
       - sentences:
           - "(όρισε|ρύθμισε) τη φωτεινότητα του {floor} [ορόφου] [ως|σε|στο] {brightness} τοις εκατό"
 
+      # color
       - sentences:
           - "(όρισε|ρύθμισε) το χρώμα (του|της) {name} [ως|σε] {color}"
           - "(όρισε|ρύθμισε) [το|την] {name} [ως|σε] {color}"
@@ -198,26 +222,33 @@ intents:
           - "(όρισε|ρύθμισε) (στο(ν)|του) {floor} [όροφο|ορόφου] (τα φώτα|τις λάμπες) [ως|σε] χρώμα {color}"
           - "(όρισε|ρύθμισε) (τα φώτα|τις λάμπες) του {floor} [ορόφου] [ως|σε] {color}" 
 
+  # timers
   HassStartTimer:
     data:
+      # seconds
       - sentences:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {seconds} δευτερόλεπτα"
+      # minutes
       - sentences:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) 1 λεπτό"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {minutes_small} λεπτά"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {minutes_large} λεπτά"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {minutes_extra} λεπτά"
+      # minutes and halfs
       - sentences:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) 1 και {minutes_half:seconds} λεπτά"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {minutes_small} και {minutes_half:seconds} λεπτά"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {minutes_large} και {minutes_half:seconds} λεπτά"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {minutes_extra} και {minutes_half:seconds} λεπτά"
+      # hours
       - sentences:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) 1 ώρα"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {hours} ώρες"
+      # hours and halfs
       - sentences:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) 1 και {minutes_half:minutes} ώρες"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {hours} και {minutes_half:minutes} ώρες"
+      # hours and minutes
       - sentences:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) 1 ώρα και 1 λεπτό"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) 1 ώρα και {minutes_small} λεπτά"
@@ -227,32 +258,38 @@ intents:
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {hours} ώρες και {minutes_large} λεπτά"
           - "(όρισε|ρύθμισε|ξεκίνα|δημιούργησε) ένα (χρονοδιακόπτη|χρονόμετρο) (για|με) {hours} ώρες και {minutes_extra} λεπτά"
 
+  # timer cancel (single)
   HassCanelTimer:
     data:
       - sentences:
           - "(ακύρωσε|σταμά(τα|τησε)) [το(ν)] (χρονοδιακόπτη|χρονόμετρο)"
 
+  # timer cancel (all)
   HassCancelAllTimer:
     data:
       - sentences:
           - "(ακύρωσε|σταμά(τα|τησε)) (όλους τους χρονοδιακόπτες|όλα τα χρονόμετρα)"
 
+  # timer pause
   HassPauseTimer:
     data:
       - sentences:
           - "παύση [του] (χρονοδιακόπτη|χρονόμετρου)"
 
+  # timer unpause
   HassUnpauseTimer:
     data:
       - sentences:
           - "συνέχισε [το(ν)] (χρονοδιακόπτη|χρονόμετρο)"
 
+  # timer status
   HassTimerStatus:
     data:
       - sentences:
           - "[ποια είναι η] κατάσταση [του|των] (χρονοδια(κόπτη|κοπτών)|χρονομέ(τρου|τρων))"
           - "πόσος χρόνος απομένει στ(ο|α|ν|υς) (χρονοδιακόπτ(η|ες)|χρονόμε(τρο|τρα))"
 
+  # media player pause
   HassMediaPause:
     data:
       - sentences:
@@ -262,6 +299,7 @@ intents:
         requires_context:
           domain: media_player
 
+  # media player unpause
   HassMediaUnpause:
     data:
       - sentences:
@@ -271,6 +309,7 @@ intents:
         requires_context:
           domain: media_player
 
+  # media player next/skip
   HassMediaNext:
     data:
       - sentences:
@@ -280,6 +319,7 @@ intents:
         requires_context:
           domain: media_player
 
+  # temperature questions
   HassGetTemperature:
     data:
       - sentences:
@@ -297,6 +337,7 @@ intents:
           - "τι θερμοκρασία έχει (ο|το) {floor} [όροφος]"
           - "(ποια|πόσο) είναι η θερμοκρασία του {floor} [ορόφου]"
 
+  # generic and domain specific questions 
   HassGetState:
     data:
       - sentences:
@@ -304,6 +345,7 @@ intents:
         requires_context:
           domain:
             - cover
+            - valve
         lists:
           state:
             values:
