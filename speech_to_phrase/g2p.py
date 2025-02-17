@@ -12,7 +12,7 @@ from unicode_rbnf import RbnfEngine
 
 _INITIALISM_NO_DOTS = re.compile(r"^(?:\p{Lu}){2,}$")
 _INITIALISM_DOTS = re.compile(r"^(?:\p{L}\.){2,}$")
-_NUMBER_SPLIT = re.compile(r"(\d+(?:\.\d+)?)")
+_NUMBER_SPLIT = re.compile(r"(\d+(?:\.\d+)?)|[-_]")
 _NUMBER = re.compile(r"^\d+(\.\d+)?$")
 
 # -----------------------------------------------------------------------------

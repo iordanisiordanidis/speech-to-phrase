@@ -21,3 +21,6 @@ def test_split_words() -> None:
         ("point", None),
         ("five", None),
     ]
+
+    # Dashes and underscores
+    assert split_words("test_name-1", lexicon, engine) == ["test", "name", ("one", "1")]

@@ -31,6 +31,7 @@ THINGS = Things(
         Entity(names=["Front Door"], domain="lock"),
         Entity(names=["Party Time"], domain="script"),
         Entity(names=["Mood Lighting"], domain="scene"),
+        Entity(names=["Shopping List"], domain="todo"),
     ],
     areas=[Area(names=["Office"]), Area(names=["Kitchen"])],
     floors=[Floor(names=["First Floor"])],
@@ -92,6 +93,7 @@ async def train_english() -> None:
         "run Party Time",
         "activate Mood Lighting",
         "never mind",
+        "add apples to my Shopping List",
     ],
 )
 @pytest.mark.asyncio

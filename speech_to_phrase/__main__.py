@@ -32,6 +32,11 @@ async def main() -> None:
     parser.add_argument(
         "--models-dir", required=True, help="Directory with speech models"
     )
+    parser.add_argument(
+        "--custom-sentences-dir",
+        action="append",
+        help="Directory with custom sentence directories for each language",
+    )
     # Home Assistant
     parser.add_argument(
         "--hass-token", required=True, help="Long-lived access token for Home Assistant"
@@ -72,6 +77,7 @@ async def main() -> None:
             models_dir=Path(args.models_dir),
             train_dir=Path(args.train_dir),
             tools_dir=Path(args.tools_dir),
+            custom_sentences_dirs=args.custom_sentences_dir or [],
             hass_token=args.hass_token,
             hass_websocket_uri=args.hass_websocket_uri,
             retrain_on_connect=args.retrain_on_connect,
@@ -82,6 +88,7 @@ async def main() -> None:
     if args.retrain_on_start:
         await _retrain_once(state)
 
+    # Retrain on an interval
     retrain_task: Optional[asyncio.Task] = None
     if (args.retrain_seconds is not None) and (args.retrain_seconds > 0):
         retrain_task = asyncio.create_task(_retrain_loop(state, args.retrain_seconds))

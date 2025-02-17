@@ -1,6 +1,6 @@
 <h1>
   <img src="icon.png" alt="Speech-to-phrase logo" height="42" align="top">
-  Speech-to-phrase
+  Speech-to-Phrase
 </h1>
 
 A fast and local speech-to-text system that is personalized with your [Home Assistant](https://www.home-assistant.io/) device and area names.
@@ -8,7 +8,7 @@ A fast and local speech-to-text system that is personalized with your [Home Assi
 Speech-to-phrase is not a general purpose speech recognition system. Instead of answering the question "what did the user say?", it answers "which of the phrases I know did the user say?".
 This is accomplished by combining [pre-defined sentence templates](speech_to_phrase/sentences) with the names of your Home Assistant [entities, areas, and floors](https://www.home-assistant.io/getting-started/concepts-terminology/) that have been [exposed to Assist](https://www.home-assistant.io/voice_control/voice_remote_expose_devices/).
 
-[![Show add-on](https://my.home-assistant.io/badges/supervisor_addon.svg)](https://my.home-assistant.io/redirect/supervisor_addon/?addon=47701997_speech-to-phrase&repository_url=https%3A%2F%2Fgithub.com%2Frhasspy%2Fhassio-addons)
+[![Show add-on](https://my.home-assistant.io/badges/supervisor_addon.svg)](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_speech-to-phrase)
 
 ## Supported languages
 
@@ -18,6 +18,47 @@ This is accomplished by combining [pre-defined sentence templates](speech_to_phr
 - [Nederlands (Dutch)](https://github.com/OHF-Voice/speech-to-phrase/blob/main/docs/dutch.md)
 - [Spanish (Español)](https://github.com/OHF-Voice/speech-to-phrase/blob/main/docs/spanish.md)
 - [Italian (Italiano)](https://github.com/OHF-Voice/speech-to-phrase/blob/main/docs/italian.md)
+
+## Custom sentences
+
+You can add your [own sentences and list values][custom_sentences] with `--custom-sentences-dir <DIR>` where `<DIR>` contains directories of YAML files per language. For example:
+
+``` sh
+python3 -m speech_to_phrase ... --custom-sentences-dir /path/to/custom_sentences
+```
+
+For an English model, you could have `/path/to/custom_sentences/en/sentences.yaml` with:
+
+``` yaml
+language: "en"
+lists:
+  todo_item:
+    values:
+      - "apples"  # make sure to use quotes!
+      - "bananas"
+```
+
+This would allow you to say "add apples to my shopping list" if you have a [todo][] entity in Home Assistant exposed with the name "shopping list".
+
+You can also create lists with the same names as your [sentence trigger wildcards][sentence_wildcards] to make them usable in speech-to-phrase.
+
+## Docker container
+
+A Docker container is available that can be connected to Home Assistant via the [wyoming integration][wyoming]:
+
+``` sh
+docker run -it -p 10300:10300 \
+  -v /path/to/download/models:/models \
+  -v /path/to/train:/train rhasspy/wyoming-speech-to-phrase \
+  --hass-websocket-uri 'ws://homeassistant.local:8123/api/websocket' \
+  --hass-token '<LONG_LIVED_ACCESS_TOKEN>' \
+  --retrain-on-start
+```
+
+## Models and tools
+
+Speech models and tools are downloaded automatically from [HuggingFace](https://huggingface.co/datasets/rhasspy/rhasspy-speech/tree/main)
+
 
 ## How it works
 
@@ -36,7 +77,8 @@ During training, a lot of "magic" happens to ensure that your entity, area, and 
 
 To make phrase recognition more robust, a "fuzzy" layer is added on top of Kaldi's transcription output. This layer can correct small errors, such as duplicate or missing words, and also ensures that output names are exactly what you have in Home Assistant.
 
-## Models and tools
 
-Speech models and tools are downloaded automatically from [HuggingFace](https://huggingface.co/datasets/rhasspy/rhasspy-speech/tree/main)
-
+[custom_sentences]: https://www.home-assistant.io/voice_control/custom_sentences_yaml/#setting-up-sentences-in-the-config-directory
+[todo]: https://www.home-assistant.io/integrations/todo
+[sentence_wildcards]: https://www.home-assistant.io/docs/automation/trigger/#sentence-wildcards
+[wyoming]: https://www.home-assistant.io/integrations/wyoming

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name        = "speech_to_phrase"
-version     = "1.0.0"
+version     = "1.2.0"
 license     = {text = "Apache-2.0"}
 description = "Fast and personalized local speech-to-text"
 readme      = "README.md"

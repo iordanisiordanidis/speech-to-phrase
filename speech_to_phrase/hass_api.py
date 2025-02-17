@@ -2,6 +2,7 @@
 
 import hashlib
 import logging
+import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Set
 
@@ -108,7 +109,11 @@ class Things:
         lists_dict: Dict[str, Any] = {}
         lists_dict["name"] = {
             "values": [
-                {"in": e_name, "out": e_name, "context": {"domain": e.domain}}
+                {
+                    "in": _remove_template_syntax(e_name),
+                    "out": e_name,
+                    "context": {"domain": e.domain},
+                }
                 for e in self.entities
                 for e_name in e.names
             ]
@@ -123,6 +128,11 @@ class Things:
         }
 
         return lists_dict
+
+
+def _remove_template_syntax(name: str) -> str:
+    """Remove template syntax from a name."""
+    return re.sub(r"[{}\[\]<>()]", "", name)
 
 
 @dataclass

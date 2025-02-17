@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Set
 
 from hassil.intents import Intents
+from hassil.util import merge_dict
 from yaml import SafeDumper, safe_dump, safe_load
 
 from .const import EPS, SIL, SPN, UNK, Settings, WordCasing
@@ -156,6 +157,24 @@ def _create_intents(model: Model, settings: Settings, things: Things) -> Intents
             "data": [{"sentences": things.trigger_sentences}]
         }
         sentences_dict["intents"] = intents_dict
+
+    # Custom sentences
+    for custom_sentences_dir in settings.custom_sentences_dirs:
+        dir_for_language = custom_sentences_dir / model.language
+        if not dir_for_language.is_dir():
+            # Try language family
+            dir_for_language = custom_sentences_dir / model.language_family
+
+            if not dir_for_language.is_dir():
+                continue
+
+        for custom_sentences_path in sorted(dir_for_language.glob("*.yaml")):
+            _LOGGER.debug("Loading custom sentences from %s", custom_sentences_path)
+
+            with open(
+                custom_sentences_path, "r", encoding="utf-8"
+            ) as custom_sentences_file:
+                merge_dict(sentences_dict, safe_load(custom_sentences_file) or {})
 
     # Write YAML with training sentences (includes HA lists, triggers, etc.)
     SafeDumper.ignore_aliases = lambda *args: True  # type: ignore[assignment]
@@ -503,12 +522,28 @@ async def _prepare_online_decoding(
 def _get_sentences_hash(
     model: Model, settings: Settings, chunk_size: int = 8192
 ) -> str:
-    """Get a hash of sentences YAML file."""
-    sentences_path = settings.sentences / f"{model.sentences_language}.yaml"
+    """Get a hash of sentences YAML files (builtin and custom)."""
     hasher = hashlib.sha256()
 
+    # Builtin sentences
+    sentences_path = settings.sentences / f"{model.sentences_language}.yaml"
     with open(sentences_path, "rb") as sentences_file:
         chunk = sentences_file.read(chunk_size)
         hasher.update(chunk)
+
+    # Custom sentences
+    for custom_sentences_dir in settings.custom_sentences_dirs:
+        dir_for_language = custom_sentences_dir / model.language
+        if not dir_for_language.is_dir():
+            # Try language family
+            dir_for_language = custom_sentences_dir / model.language_family
+
+            if not dir_for_language.is_dir():
+                continue
+
+        for custom_sentences_path in sorted(dir_for_language.glob("*.yaml")):
+            with open(custom_sentences_path, "rb") as custom_sentences_file:
+                chunk = custom_sentences_file.read(chunk_size)
+                hasher.update(chunk)
 
     return hasher.hexdigest()

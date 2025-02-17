@@ -381,12 +381,12 @@ intents:
           domain: climate
 
       - sentences:
-          - "wat is de temperatatuur in [de|het] {area}"
+          - "wat is de temperatuur in [de|het] {area}"
           - "hoe (warm|koud|heet|koel) is het in [de|het] {area}"
           - "wat is de {area}[ ]temperatuur"
 
       - sentences:
-          - "wat is de temperatatuur in [de|het] {floor}[[ ]verdieping]"
+          - "wat is de temperatuur in [de|het] {floor}[[ ]verdieping]"
           - "hoe (warm|koud|heet|koel) is het in [de|het] {floor}[[ ]verdieping]"
           - "wat is de {floor}[[ ]verdieping][ ]temperatuur"
 

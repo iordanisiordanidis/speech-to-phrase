@@ -15,4 +15,5 @@ SETTINGS = Settings(
     hass_token="",
     hass_websocket_uri="",
     retrain_on_connect=False,
+    custom_sentences_dirs=[TESTS_DIR / "custom_sentences"],
 )
