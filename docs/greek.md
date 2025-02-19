@@ -1,4 +1,4 @@
-# Greek
+# Greek (Ελληνικά)
 
 ## Date and Time
 
@@ -32,12 +32,16 @@
     - Requires a [light][] entity named "bed light" that supports setting brightness
     - Brightness from 10-100 by 10s
 
-## Sensors
+## Sensors and Valves
 
 - "ποια είναι η εξωτερική υγρασία"
     - Requires a [sensor][] entity named "εξωτερική υγρασία"
+- "άνοιξε/κλείσε την βαλβίδα νερού"
+    - Requires a [valve][] entity named "βαλβίδα νερού"
+- "είναι η βαλβίδα νερού ανοικτή/κλεστή;"
+    - Requires a [valve][] entity named "βαλβίδα νερού"
 
-## Doors and Windows
+## Doors and Windows Covers
 
 - "άνοιξε/κλείσε την γκαραζόπορτα"
     - Requires a [cover][] entity named "γκαραζόπορτα"
@@ -80,6 +84,11 @@
 - "ενεργοποίησε το mood lighting"
     - Requires a [scene][] named "mood lighting" 
 
+## Todo List
+
+- "πρόσθεσε καρότα στην λίστα τρόφιμα"
+    - Requires a [todo][] list named "τρόφιμα"
+
 ## Miscellaneous
 
 - "άκυρο"
@@ -88,6 +97,7 @@
 [area]: https://www.home-assistant.io/docs/organizing/#area
 [climate]: https://www.home-assistant.io/integrations/climate/
 [cover]: https://www.home-assistant.io/integrations/cover/
+[valve]: https://www.home-assistant.io/integrations/valve/
 [floor]: https://www.home-assistant.io/docs/organizing/#floor
 [light]: https://www.home-assistant.io/integrations/light/
 [lock]: https://www.home-assistant.io/integrations/lock/
@@ -96,3 +106,4 @@
 [script]: https://www.home-assistant.io/integrations/script/
 [sensor]: https://www.home-assistant.io/integrations/sensor/
 [weather]: https://www.home-assistant.io/integrations/weather/
+[todo]: https://www.home-assistant.io/integrations/todo/
