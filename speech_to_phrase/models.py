@@ -167,18 +167,6 @@ MODELS: Dict[str, Model] = {
     #     sentences_language="cs",
     #     number_language="cs",
     # ),
-    # Language.GREEK.value: Model(
-    #     id="el-EL-rhasspy",
-    #     language="el_EL",
-    #     language_family="el",
-    #     description="Greek Pocketsphinx model",
-    #     version="1.0",
-    #     author="Rhasspy",
-    #     url="https://github.com/rhasspy/rhasspy",
-    #     casing=WordCasing.LOWER,
-    #     sentences_language="el",
-    #     number_language="el",
-    # ),
 }
 
 DEFAULT_MODEL = MODELS[Language.ENGLISH]

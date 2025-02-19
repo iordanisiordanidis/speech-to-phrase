@@ -37,7 +37,6 @@ class Language(str, Enum):
     GREEK = "el"
     # RUSSIAN = "ru"  # need more sentences
     # CZECH = "cs"  # need more sentences
-    # GREEK = "el" # needs more sentences
 
 
 class Settings:
