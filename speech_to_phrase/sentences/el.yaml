@@ -1,0 +1,241 @@
+language: el
+
+lists:
+  color:
+    values:
+      - in: "λευκό"
+      - in: "μαύρο"
+      - in: "κόκκινο"
+      - in: "πορτοκαλί"
+      - in: "κίτρινο"
+      - in: "πράσινο"
+      - in: "μπλε"
+      - in: "μωβ"
+      - in: "καφέ"
+      - in: "ροζ"
+      - in: "τουρκουάζ"
+  brightness:
+    range:
+      type: "percentage"
+      from: 10
+      to: 100
+      step: 10
+  seconds:
+    range:
+      from: 10
+      to: 100
+      step: 5
+  minutes_small:
+    range:
+      from: 2
+      to: 9
+  minutes_large:
+    range:
+      from: 10
+      to: 100
+      step: 10
+  minutes_extra:
+    values:
+      - in: "δεκαπέντε"
+        out: 15
+      - in: "σαράντα πέντε"
+        out: 45
+  hours:
+    range:
+      from: 2
+      to: 24
+
+expansion_rules:
+  of: "του|της|των"
+  to: "στον|στην|στο"
+  the: "ο|η|το"
+
+intents:
+  # nevermind
+  HassNevermind:
+    data:
+      - sentences:
+          - "άστο"
+          - "ξέχνα το"
+          - "άκυρο"
+          - "ξέχνατο"
+          - "άσε το"
+
+  # date, time, weather
+  HassGetCurrentTime:
+    data:
+      - sentences:
+          - "τι ώρα είναι"
+
+  HassGetCurrentDate:
+    data:
+      - sentences:
+          - "τι μέρα είναι σήμερα"
+
+  HassGetWeather:
+    data:
+      - sentences:
+          - "τι καιρό κάνει"
+          - "πώς είναι ο καιρός"
+      - sentences:
+          - "τι καιρό κάνει στο {name}"
+          - "πώς είναι ο καιρός στο {name}"
+        requires_context:
+          domain: weather
+
+  # turn on/off
+  HassTurnOn:
+    data:
+      # turn on
+      - sentences:
+          - "άναψε τα φώτα"
+      - sentences:
+          - "άναψε <the> {name}"
+        requires_context:
+          domain:
+            - light
+            - switch
+            - fan
+            - media_player
+            - input_boolean
+      - sentences:
+          - "άναψε τα φώτα στο {area}"
+      # open (covers/valves)
+      - sentences:
+          - "άνοιξε <the> {name}"
+        requires_context:
+          domain:
+            - cover
+            - valve
+
+  HassTurnOff:
+    data:
+      # turn off
+      - sentences:
+          - "σβήσε τα φώτα"
+      - sentences:
+          - "σβήσε <the> {name}"
+        requires_context:
+          domain:
+            - light
+            - switch
+            - fan
+            - media_player
+            - input_boolean
+      - sentences:
+          - "σβήσε τα φώτα στο {area}"
+      # close (covers/valves)
+      - sentences:
+          - "κλείσε <the> {name}"
+        requires_context:
+          domain:
+            - cover
+            - valve
+
+  # light brightness/color
+  HassLightSet:
+    data:
+      # brightness
+      - sentences:
+          - "ρύθμισε τη φωτεινότητα <of> {name} στο {brightness} τοις εκατό"
+        requires_context:
+          domain: light
+      - sentences:
+          - "ρύθμισε τη φωτεινότητα στο {area} στο {brightness} τοις εκατό"
+      # color
+      - sentences:
+          - "ρύθμισε <the> {name} σε {color}"
+        requires_context:
+          domain: light
+      - sentences:
+          - "ρύθμισε τα φώτα στο {area} σε {color}"
+
+  # timers
+  HassStartTimer:
+    data:
+      # seconds
+      - sentences:
+          - "ρύθμισε χρονόμετρο για {seconds} δευτερόλεπτα"
+      # minutes
+      - sentences:
+          - "ρύθμισε χρονόμετρο για 1 λεπτό"
+          - "ρύθμισε χρονόμετρο για {minutes_small} λεπτά"
+          - "ρύθμισε χρονόμετρο για {minutes_large} λεπτά"
+          - "ρύθμισε χρονόμετρο για {minutes_extra} λεπτά"
+      # hours
+      - sentences:
+          - "ρύθμισε χρονόμετρο για 1 ώρα"
+          - "ρύθμισε χρονόμετρο για {hours} ώρες"
+      # hours + minutes
+      - sentences:
+          - "ρύθμισε χρονόμετρο για 1 ώρα και 1 λεπτό"
+          - "ρύθμισε χρονόμετρο για 1 ώρα και {minutes_small} λεπτά"
+          - "ρύθμισε χρονόμετρο για 1 ώρα και {minutes_large} λεπτά"
+          - "ρύθμισε χρονόμετρο για 1 ώρα και {minutes_extra} λεπτά"
+          - "ρύθμισε χρονόμετρο για {hours} ώρες και {minutes_small} λεπτά"
+          - "ρύθμισε χρονόμετρο για {hours} ώρες και {minutes_large} λεπτά"
+          - "ρύθμισε χρονόμετρο για {hours} ώρες και {minutes_extra} λεπτά"
+
+  HassCancelTimer:
+    data:
+      - sentences:
+          - "(ακύρωσε|διέκοψε) [το|το μου] χρονόμετρο"
+
+  HassCancelAllTimers:
+    data:
+      - sentences:
+          - "(ακύρωσε|διέκοψε) όλα [τα|τα μου] χρονόμετρα"
+
+  HassPauseTimer:
+    data:
+      - sentences:
+          - "πάυσε [το|το μου] χρονόμετρο"
+
+  HassUnpauseTimer:
+    data:
+      - sentences:
+          - "(σύνεχισε|ξαναξεκίνησε) [το|το μου] χρονόμετρο"
+
+  HassTimerStatus:
+    data:
+      - sentences:
+          - "κατάσταση χρονόμετρου"
+          - "κατάσταση [του|του μου] χρονόμετρου"
+          - "[πόσο] χρόνος [απομένει|λείπει] [στο|στα] χρονόμετρα"
+
+  # media players
+  HassMediaPause:
+    data:
+      - sentences:
+          - "παύσε"
+  HassMediaUnpause:
+    data:
+      - sentences:
+          - "συνέχισε"
+  HassMediaNext:
+    data:
+      - sentences:
+          - "επόμενο"
+
+  # temperature
+  HassGetTemperature:
+    data:
+      - sentences:
+          - "ποια είναι η θερμοκρασία"
+      - sentences:
+          - "ποια είναι η θερμοκρασία στο {area}"
+
+  # questions
+  HassGetState:
+    data:
+      - sentences:
+          - "<the> {name} είναι {state}"
+        requires_context:
+          domain:
+            - cover
+            - valve
+        lists:
+          state:
+            values:
+              - "ανοιχτ(ό|ή|ς)"
+              - "κλειστ(ό|ή|ς)"

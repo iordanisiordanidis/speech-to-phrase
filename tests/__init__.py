@@ -1,6 +1,8 @@
 """Tests."""
 
+import csv
 from pathlib import Path
+from typing import List
 
 from speech_to_phrase import Settings
 
@@ -17,3 +19,16 @@ SETTINGS = Settings(
     retrain_on_connect=False,
     custom_sentences_dirs=[TESTS_DIR / "custom_sentences"],
 )
+
+
+def load_test_sentences(language: str) -> List[str]:
+    """Load test sentences for a language from a CSV file."""
+    sentences: List[str] = []
+
+    csv_path = TESTS_DIR / "test_sentences" / f"{language}.csv"
+    with open(csv_path, "r", encoding="utf-8") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            sentences.append(row["sentence"])
+
+    return sentences

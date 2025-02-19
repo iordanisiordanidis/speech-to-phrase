@@ -13,9 +13,10 @@ from speech_to_phrase import MODELS, Language, Things, train, transcribe
 from speech_to_phrase.audio import wav_audio_stream
 from speech_to_phrase.hass_api import Area, Entity, Floor
 
-from . import SETTINGS, TESTS_DIR
+from . import SETTINGS, TESTS_DIR, load_test_sentences
 
 LANGUAGE = Language.FRENCH.value
+TEST_SENTENCES = load_test_sentences(LANGUAGE)
 MODEL = MODELS[LANGUAGE]
 
 WAV_DIR = TESTS_DIR / "wav" / LANGUAGE
@@ -44,7 +45,7 @@ def french_intents() -> Intents:
 
 @pytest_asyncio.fixture(scope="session")
 async def train_french() -> None:
-    """Train English Kaldi model once per session."""
+    """Train French Kaldi model once per session."""
     if SETTINGS.train_dir.exists():
         shutil.rmtree(SETTINGS.train_dir)
 
@@ -54,57 +55,7 @@ async def train_french() -> None:
 # Some of these sentences have incorrect grammar. This is on purpose because:
 # 1. There is no way speech-to-phrase is going to get it exactly correct
 # 2. It doesn't matter anyways because the intent recognizer is flexible
-@pytest.mark.parametrize(
-    "text",
-    [
-        "allume la Chambre à 80 pourcent",
-        "allume la lumière",
-        "allume le Bureau en rouge",
-        "allume le Premier Étage en vert",
-        "allume le Rez-de-chaussée à 80 pourcent",
-        "allume les lumières dans la Chambre",
-        "allume les lumières en bleu",
-        "allume toutes les lumières",
-        "allume toutes les lumières dans le Rez-de-chaussée",
-        "annuler",
-        "combien de temps reste-t-il",
-        "combien fait-il",
-        "combien fait-il dans le Bureau",
-        "combien fait-il dans le Salon",
-        "déverrouille la Porte d'entrée",
-        "éteins la lumière",
-        "éteins les lumières dans le Salon",
-        "éteins toutes les lumières",
-        "éteins toutes les lumières du Premier Étage",
-        "ferme les rideau du Bureau",
-        "fermer les rideau",
-        "ferme tous les volet",
-        "lecture",
-        "média suivant",
-        "minuteur 10 minutes",
-        "minuteur 1 heures",
-        "minuteur 20 secondes",
-        "minuteur 30 secondes",
-        "minuteur 3 heures et 10 minutes",
-        "minuteur 5 minutes",
-        "ouvre les rideau du Rez-de-chaussée",
-        "ouvre les volet",
-        "ouvre les volet du Premier Étage",
-        "ouvre tous les volet",
-        "pause",
-        "quel jour sommes-nous",
-        "quelle heure est-il",
-        "quel temps fait-il",
-        "quel temps fait-il à New York",
-        "règle la luminosité dans le Bureau à 50 pourcent",
-        "reprends le minuteur",
-        "silence",
-        "suivant",
-        "supprime le minuteur",
-        "supprime tous les minuteurs",
-        "verrouille la Porte d'entrée",
-    ],
-)
+@pytest.mark.parametrize("text", TEST_SENTENCES)
 @pytest.mark.asyncio
 async def test_transcribe(
     text: str,

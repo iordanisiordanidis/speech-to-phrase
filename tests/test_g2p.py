@@ -24,3 +24,13 @@ def test_split_words() -> None:
 
     # Dashes and underscores
     assert split_words("test_name-1", lexicon, engine) == ["test", "name", ("one", "1")]
+
+
+def test_decimal_numbers() -> None:
+    assert split_words("PM2.5", LexiconDatabase(), RbnfEngine.for_language("fr")) == [
+        "P",
+        "M",
+        ("deux", "2.5"),
+        ("virgule", None),
+        ("cinq", None),
+    ]

@@ -86,7 +86,7 @@ async def main() -> None:
     )
 
     if args.retrain_on_start:
-        await _retrain_once(state)
+        await _retrain_once(state, force_retrain=True)
 
     # Retrain on an interval
     retrain_task: Optional[asyncio.Task] = None
@@ -115,11 +115,9 @@ async def _retrain_loop(state: State, wait_seconds: float) -> None:
         await _retrain_once(state)
 
 
-async def _retrain_once(state: State) -> None:
+async def _retrain_once(state: State, force_retrain: bool = False) -> None:
     """Retrain all models that match HA's language or a pipeline language."""
     settings = state.settings
-    _LOGGER.info("Training started")
-
     _LOGGER.debug(
         "Getting exposed things from Home Assistant (%s)", settings.hass_websocket_uri
     )
@@ -154,7 +152,9 @@ async def _retrain_once(state: State) -> None:
                 # Already training
                 continue
 
-            train_task = asyncio.create_task(_train_model(model, settings, hass_info))
+            train_task = asyncio.create_task(
+                _train_model(model, settings, hass_info, force_retrain=force_retrain)
+            )
             state.model_train_tasks[model.id] = train_task
             train_task.add_done_callback(
                 partial(
@@ -165,10 +165,13 @@ async def _retrain_once(state: State) -> None:
 
 
 async def _train_model(
-    model: Model, settings: Settings, hass_info: HomeAssistantInfo
+    model: Model,
+    settings: Settings,
+    hass_info: HomeAssistantInfo,
+    force_retrain: bool = False,
 ) -> None:
     try:
-        await train(model, settings, hass_info.things)
+        await train(model, settings, hass_info.things, force_retrain=force_retrain)
     except Exception:
         _LOGGER.exception("Unexpected error while training %s", model.id)
         raise

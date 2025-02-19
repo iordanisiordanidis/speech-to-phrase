@@ -13,9 +13,10 @@ from speech_to_phrase import MODELS, Language, Things, train, transcribe
 from speech_to_phrase.audio import wav_audio_stream
 from speech_to_phrase.hass_api import Area, Entity, Floor
 
-from . import SETTINGS, TESTS_DIR
+from . import SETTINGS, TESTS_DIR, load_test_sentences
 
 LANGUAGE = Language.ENGLISH.value
+TEST_SENTENCES = load_test_sentences(LANGUAGE)
 MODEL = MODELS[LANGUAGE]
 
 WAV_DIR = TESTS_DIR / "wav" / LANGUAGE
@@ -59,43 +60,7 @@ async def train_english() -> None:
     await train(MODEL, SETTINGS, THINGS)
 
 
-@pytest.mark.parametrize(
-    "text",
-    [
-        "what time is it",
-        "what's the date",
-        "what's the weather",
-        "what's the weather like in New York",
-        "what's the temperature",
-        "what's the temperature of the EcoBee",
-        "turn on Standing Light",
-        "turn off lights in the Office",
-        "turn off all of the lights in the Office",
-        "turn on lights on the First Floor",
-        "set Kitchen lights to green",
-        "set Bed Light brightness to 50 percent",
-        "what is the Outdoor Humidity",
-        "close the Garage Door",
-        "is the Garage Door open",
-        "lock the Front Door",
-        "is the Front Door locked",
-        "set a timer for 5 minutes",
-        "set a timer for 30 seconds",
-        "set a timer for 3 hours and 10 minutes",
-        "pause timer",
-        "resume timer",
-        "cancel timer",
-        "cancel all timers",
-        "timer status",
-        "pause",
-        "resume",
-        "next",
-        "run Party Time",
-        "activate Mood Lighting",
-        "never mind",
-        "add apples to my Shopping List",
-    ],
-)
+@pytest.mark.parametrize("text", TEST_SENTENCES)
 @pytest.mark.asyncio
 async def test_transcribe(
     text: str,

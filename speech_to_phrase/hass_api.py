@@ -157,7 +157,7 @@ async def get_hass_info(token: str, uri: str) -> HomeAssistantInfo:
         return current_id
 
     async with aiohttp.ClientSession() as session:
-        async with session.ws_connect(uri) as websocket:
+        async with session.ws_connect(uri, max_msg_size=0) as websocket:
             # Authenticate
             msg = await websocket.receive_json()
             assert msg["type"] == "auth_required", msg

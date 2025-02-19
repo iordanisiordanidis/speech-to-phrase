@@ -599,24 +599,7 @@ def expression_to_fst(
 
             if num_to_words is None:
                 # Dead branch
-                # return None
-                # TODO
-                number_alt = Sequence(type=SequenceType.ALTERNATIVE)
-                for number in range(
-                    range_list.start, range_list.stop + 1, range_list.step
-                ):
-                    number_alt.items.append(TextChunk(str(number)))
-
-                return expression_to_fst(
-                    number_alt,
-                    state,
-                    fst,
-                    intent_data,
-                    intents,
-                    slot_lists,
-                    num_to_words,
-                    g2p_info,
-                )
+                return None
 
             num_cache_key = (range_list.start, range_list.stop + 1, range_list.step)
             number_sequence = num_to_words.cache.get(num_cache_key)
@@ -624,9 +607,7 @@ def expression_to_fst(
             if number_sequence is None:
                 values = []
                 if num_to_words is not None:
-                    for number in range(
-                        range_list.start, range_list.stop + 1, range_list.step
-                    ):
+                    for number in range_list.get_numbers():
                         number_str = str(number)
                         number_result = num_to_words.engine.format_number(number)
                         number_words = {

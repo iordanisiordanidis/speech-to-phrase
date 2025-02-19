@@ -45,6 +45,7 @@ INFO = Info(
                     version=model.version,
                 )
                 for language, model in MODELS.items()
+                if model.is_enabled
             ],
         )
     ]
@@ -93,6 +94,9 @@ class SpeechToPhraseEventHandler(AsyncEventHandler):
             model: Optional[Model]
             if transcribe_event.name:
                 for model in MODELS.values():
+                    if not model.is_enabled:
+                        continue
+
                     if model.id == transcribe_event.name:
                         self.model = model
                         _LOGGER.debug("Selected model by name: %s", model.id)
@@ -100,10 +104,10 @@ class SpeechToPhraseEventHandler(AsyncEventHandler):
 
             elif transcribe_event.language:
                 model = MODELS.get(transcribe_event.language)
-                if model is None:
+                if (model is None) or (not model.is_enabled):
                     model = MODELS.get(get_language_family(transcribe_event.language))
 
-                if model is not None:
+                if (model is not None) and model.is_enabled:
                     self.model = model
                     _LOGGER.debug("Selected model by language: %s", model.id)
 
@@ -211,13 +215,13 @@ class SpeechToPhraseEventHandler(AsyncEventHandler):
     def _get_default_model(self) -> Model:
         # Try HA language
         maybe_model = MODELS.get(self.settings.default_language)
-        if maybe_model is None:
+        if (maybe_model is None) or (not maybe_model.is_enabled):
             # Try HA language family
             maybe_model = MODELS.get(
                 get_language_family(self.settings.default_language)
             )
 
-        if maybe_model is None:
+        if (maybe_model is None) or (not maybe_model.is_enabled):
             # Fall back to English model
             return DEFAULT_MODEL
 

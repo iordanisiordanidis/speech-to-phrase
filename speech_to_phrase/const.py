@@ -15,6 +15,10 @@ SIL = "SIL"  # silence
 SPN = "SPN"  # spoken noise
 UNK = "<unk>"  # unknown
 
+# Coqui STT
+BLANK = "<blank>"
+SPACE = "<space>"
+
 # Audio
 RATE = 16000  # hertz
 WIDTH = 2  # bytes
@@ -30,6 +34,7 @@ class Language(str, Enum):
     DUTCH = "nl"
     SPANISH = "es"
     ITALIAN = "it"
+    GREEK = "el"
     # RUSSIAN = "ru"  # need more sentences
     # CZECH = "cs"  # need more sentences
     # GREEK = "el" # needs more sentences
@@ -130,3 +135,15 @@ class WordCasing(str, Enum):
             return str.upper
 
         return lambda s: s
+
+
+class SpeechToPhraseError(Exception):
+    """Base class for Speech-to-Phrase errors."""
+
+
+class TrainingError(SpeechToPhraseError):
+    """Error during training."""
+
+
+class TranscribingError(SpeechToPhraseError):
+    """Error during transcribing."""

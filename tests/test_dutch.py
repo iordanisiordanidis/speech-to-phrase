@@ -13,9 +13,10 @@ from speech_to_phrase import MODELS, Language, Things, train, transcribe
 from speech_to_phrase.audio import wav_audio_stream
 from speech_to_phrase.hass_api import Area, Entity, Floor
 
-from . import SETTINGS, TESTS_DIR
+from . import SETTINGS, TESTS_DIR, load_test_sentences
 
 LANGUAGE = Language.DUTCH.value
+TEST_SENTENCES = load_test_sentences(LANGUAGE)
 MODEL = MODELS[LANGUAGE]
 
 WAV_DIR = TESTS_DIR / "wav" / LANGUAGE
@@ -54,39 +55,7 @@ async def train_dutch() -> None:
     await train(MODEL, SETTINGS, THINGS)
 
 
-@pytest.mark.parametrize(
-    "text",
-    [
-        "hoe laat is het",
-        "wat is de datum",
-        "wat voor weer is het",
-        "wat voor weer is het in New York",
-        "wat is de temperatuur",
-        "wat is de temperatuur van de EcoBee",
-        "zet de lampen aan",
-        "zet de Staande Lamp aan",
-        "doe alle lampen in het Kantoor uit",
-        "zet alle lampen op de Eerste Verdieping aan",
-        "zet de kleur van de Keuken op groen",
-        "zet de helderheid van de Staande Lamp 50 procent",
-        "sluit Garagedeur",
-        "is de Garagedeur open",
-        "vergrendel de Voordeur",
-        "is de Voordeur vergrendeld",
-        "zet een timer voor 5 minuten",
-        "zet een timer voor 30 seconde",
-        "zet een timer voor 3 uur en 10 minuten",
-        "pauzeer timer",
-        "hervat timer",
-        "annuleer timer",
-        "annuleer alle timers",
-        "timer status",
-        "pauzeer",
-        "hervat",
-        "volgende nummer",
-        "laat maar",
-    ],
-)
+@pytest.mark.parametrize("text", TEST_SENTENCES)
 @pytest.mark.asyncio
 async def test_transcribe(
     text: str,
