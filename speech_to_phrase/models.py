@@ -7,7 +7,7 @@ import tempfile
 from collections.abc import Collection
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set
 
 import aiohttp
 
@@ -45,6 +45,9 @@ class Model:
 
     # Kaldi
     spn_phone: str = "SPN"
+
+    # Coqui STT
+    sentence_prob_threshold: Optional[float] = None
 
 
 MODELS: Dict[str, Model] = {
@@ -282,6 +285,7 @@ MODELS: Dict[str, Model] = {
         casing=WordCasing.LOWER,
         sentences_language="mn",
         number_language="mn",
+        sentence_prob_threshold=30,
     ),
     Language.SLOVENIAN.value: Model(
         id="sl_SL-coqui",

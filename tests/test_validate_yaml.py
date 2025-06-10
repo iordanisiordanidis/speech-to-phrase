@@ -123,6 +123,10 @@ SENTENCES_SCHEMA = vol.Schema(
             # list name
             str: [str],
         },
+        vol.Optional("expansion_rules"): {
+            # rule name
+            str: vol.All(str, no_rule_references)
+        },
         vol.Optional("wildcards"): [str],
         vol.Optional("transformations"): {
             # transform name
@@ -136,7 +140,7 @@ SENTENCES_SCHEMA = vol.Schema(
             vol.Any(
                 {
                     vol.Required("sentences"): [
-                        vol.All(str, no_alternative_list_references, no_rule_references)
+                        vol.All(str, no_alternative_list_references)
                     ],
                     vol.Optional("domains"): [str],
                     vol.Optional("light_supports_color"): bool,

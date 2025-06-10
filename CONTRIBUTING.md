@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions to Speech-to-Phrase are welcome! There are two parts to are required for a language to be supported:
+Contributions to Speech-to-Phrase are welcome! There are two parts that are required for a language to be supported:
 
 1. A [speech-to-text model](#speech-to-text-models)
 2. A set of [sentence templates](#snetence-templates)
@@ -50,6 +50,9 @@ lists:
     - "list value 2"
     - "..."
     
+expansion_rules:
+  <rule_name>: "<rule body>"
+    
 data:
   - "[a] sentence template"
   - "..."
@@ -64,7 +67,7 @@ data:
 
 Sentence templates are written using the [hassil][hassil-syntax] syntax with some restrictions:
 
-* No expansion rules (`<rule_name>`)
+* Expansion rules may not reference other expansion rules (`<rule_name>`)
 * List names cannot be inside an optional (`[{list_name}]`) or alternative (`(a|{list_name})`)
 
 These restrictions are intended to reduce the possible complexity of Speech-to-Phrase sentence templates. The performance of the [speech-to-text models](#speech-to-text-models) degrades as the number of possible sentences increases, so it's best to keep it small.

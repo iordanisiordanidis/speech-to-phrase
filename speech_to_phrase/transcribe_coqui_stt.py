@@ -15,7 +15,7 @@ import struct
 import tempfile
 from collections.abc import AsyncIterable
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 from .const import BLANK, EPS, SPACE, Settings
 from .hassil_fst import decode_meta
@@ -23,6 +23,9 @@ from .models import Model
 from .speech_tools import SpeechTools
 
 _LOGGER = logging.getLogger(__name__)
+
+_DEFAULT_PRUNE_THRESHOLD = 10
+_DEFAULT_SENTENCE_PROB_THRESHOLD = 20
 
 
 async def transcribe_coqui_stt(
@@ -63,19 +66,30 @@ async def transcribe_coqui_stt(
     proc.terminate()
     await proc.wait()
 
-    return await _decode_probs(probs, train_dir, settings.tools)
+    return await _decode_probs(
+        probs,
+        train_dir,
+        settings.tools,
+        sentence_prob_threshold=model.sentence_prob_threshold,
+    )
 
 
 async def _decode_probs(
     probs: List[List[float]],
     train_dir: Union[str, Path],
     tools: SpeechTools,
-    prune_threshold: float = 10,
-    sentence_prob_threshold: float = 30,
+    prune_threshold: Optional[float] = None,
+    sentence_prob_threshold: Optional[float] = None,
 ) -> str:
     if not probs:
         # Nothing to decode
         return ""
+
+    if prune_threshold is None:
+        prune_threshold = _DEFAULT_PRUNE_THRESHOLD
+
+    if sentence_prob_threshold is None:
+        sentence_prob_threshold = _DEFAULT_SENTENCE_PROB_THRESHOLD
 
     train_dir = Path(train_dir)
 

@@ -96,6 +96,7 @@ class LanguageData:
     language: str
     sentence_blocks: list[SentenceBlock]
     list_values: dict[str, list[str]]
+    expansion_rules: dict[str, str]
     wildcard_names: set[str]
     transformed_lists: dict[str, TransformedList]
 
@@ -113,6 +114,7 @@ class LanguageData:
                     for wildcard_name in self.wildcard_names
                 },
             },
+            "expansion_rules": self.expansion_rules,
             "intents": {
                 "SpeechToPhrase": {
                     "data": [block.to_data() for block in self.sentence_blocks],
@@ -166,6 +168,7 @@ class LanguageData:
             language=data_dict["language"],
             sentence_blocks=sentence_blocks,
             list_values=data_dict.get("lists", {}),
+            expansion_rules=data_dict.get("expansion_rules", {}),
             wildcard_names=set(data_dict.get("wildcards", [])),
             transformed_lists=transformed_lists,
         )
